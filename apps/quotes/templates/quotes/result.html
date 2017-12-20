@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/./../../../../main.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+    <h2 class="welcome">Welcome, {{ user.name }}!</h2>
+    <form action="/logout" method="POST">
+        {% csrf_token %}
+        <button>Log out</button>
+    </form>
+    </div>
+
+    {% if messages %}
+    {% for message in messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+    {% endif %}
+
+    <div>
+            <h3>Your Favorites</h3>
+            {% if favorite %}
+            {% for i in favorite %}
+            <p>{{ i.content }}</p>
+            <h6>Posted by <a href="/users/{{ i.uploader_id }}">{{ i.uploader.name }}</a></h6>
+            <form action="/relists" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="quote_id" value="{{i.id}}">           
+                <button>Remove From My List</button>
+            </form>
+            {% endfor %}
+            {% endif %}
+        </div>
+    
+    <div>
+        <h3>Quotable Quotes</h3>
+
+        {% if unlike_quotes %}
+        {% for i in unlike_quotes %}
+        <p>{{ i.content }}</p>
+        
+        <h6>Posted by <a href="/users/{{ i.uploader_id }}">{{ i.uploader.name }}</a></h6>
+        <form action="/addlists" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="quote_id" value="{{i.id}}">           
+            <button>Add to My List</button>
+        </form>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+
+
+ 
+
+    <div>
+        <form action="/addquotes" method="POST">
+        {% csrf_token %}
+        <h3>Contribute a Quotes</h3>
+        Quoted by:
+        <input type="textarea" name="quotedby"><br>
+        Message:
+        <input type="textarea" name="quotes"><br>
+        <button>Submit</button>
+        </form> 
+
+    </div>
+    
+
+    
+
+    
+
+
+</body>
+</html>
